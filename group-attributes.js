@@ -7,25 +7,32 @@ $.fn.groupAttributes = function(){
       throw new TypeError('This method is only valid on Browse By Attribute type widgets!');
 
     var $defaultList = $ctl.children('ul').first(),
-        $wrapTmpl = $('<ul></ul>').addClass( $defaultList.attr('class') ),
         headerClass = $defaultList.data('header-class'),
-        footerClass = $defaultList.data('footer-class');
+        footerClass = $defaultList.data('footer-class'),
+        $divGroupTmpl = $('<div></div>').addClass('attribute-group'),
+        $wrapTmpl = $('<ul></ul>').addClass( $defaultList.attr('class') ).addClass('attribute-group-list'),
+        $headerTmpl = $('<div></div>').addClass(headerClass),
+        $footerTmpl = $('<div></div>').addClass(footerClass);
 
     $ctl.find('li').each(function(){
       var $attr = $(this);
 
       if( $attr.hasClass(headerClass) ){
-        var $newList = $wrapTmpl.clone(),
+        var $newGroup = $divGroupTmpl.clone(),
+            $newList = $wrapTmpl.clone(),
             group = $attr.text();
 
-        $newList.attr('data-group-name', group);
-        $newList.addClass( 'group-' + group.replace(/ /g,'-').toLowerCase() );
+        $newGroup.attr('data-group-name', group);
+        $newGroup.addClass( 'group-' + group.replace(/ /g,'-').toLowerCase() );
+        $newGroup.append($headerTmpl.clone().append($attr.find('.ControlHeader')));
+        $newGroup.append($newList);
 
-        $ctl.append($newList);
+        $ctl.append($newGroup);
       }
-
-
-      $ctl.find('ul').last().append( $attr );
+      else if( $attr.hasClass(footerClass) )
+        $ctl.find('.attribute-group').last().append( $footerTmpl.clone().append($attr.children()) );
+      else
+        $ctl.find('.attribute-group').last().find('.attribute-group-list').append( $attr );
     });
 
     $defaultList.hide();

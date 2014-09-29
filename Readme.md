@@ -14,11 +14,25 @@ In your widget layout, define the header class and footer class on data attribut
 </ul>
 ```
 
-###Notes
+##Notes
 This adds a few conveniences. The group is added as a data attribute called `data-group-name` and as a namespaced class. I.e. if you group name is "Country of Origin", it would result in a wrapper with the following markup.
 
 ```
-<ul class="group-country-of-origin" data-group-name="Country of Origin">
+
+<div class="attribute-group group-country-of-origin" data-group-name="Country of Origin">
 <!-- Attributes here -->
-</ul>
+</div>
+```
+
+##Final Layout
+The final layout would be something like this:
+
+```
+<div class="attribute-group group-{{group-name}}" data-group-name="{{group-name}}">
+    <div class="{{data-header-class}}"></div>
+    <ul class="attribute-group-list">
+        <!-- attribute links here -->
+    </ul>
+    <div class="{{data-footer-class}}"></div>
+</div>
 ```
