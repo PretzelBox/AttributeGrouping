@@ -14,8 +14,16 @@ $.fn.groupAttributes = function(){
     $ctl.find('li').each(function(){
       var $attr = $(this);
 
-      if( $attr.hasClass(headerClass) )
-        $ctl.append($wrapTmpl.clone());
+      if( $attr.hasClass(headerClass) ){
+        var $newList = $wrapTmpl.clone(),
+            group = $attr.text();
+
+        $newList.attr('data-group-name', group);
+        $newList.addClass( 'group-' + group.replace(/ /g,'-').toLowerCase() );
+
+        $ctl.append($newList);
+      }
+
 
       $ctl.find('ul').last().append( $attr );
     });
